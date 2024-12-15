@@ -1,41 +1,52 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 #include <queue>
+#include <vector>
 using namespace std;
 
 int main()
 {
     ifstream fin("huffman.in");
-    if (!fin) {
-        cerr << "Err" << endl;
-        return 1;
-    }
-
-    ofstream fou("huffman.in"); 
-    if (!fou) {
-        cerr << "Err" << endl;
-        return 1;
-    }
-    deque<int> s;
-    int n, sum = 0, j = 0;
+    ofstream fou("huffman.out");
+    int n, k = 0;
+    //cin >> n;
     fin >> n;
-    for (int i = 1; i <= n; i++) {
-        int a;
-        fin >> a;
-        s.push_front(a);
-    }
-    j = n;
-    while (j>1) {
-        int sum1 = 0;
-        sum1 += s.back();
-        s.pop_back();
-        sum1 += s.back();
-        s.pop_back();
-        s.push_back(sum1);
-        sum += sum1;
-        j--;
-    }
-    
-    fou << sum;
+    vector<long long> A(n);
+    queue<long long> q;
+    long long sum = 0;
 
+    for (int i = 0; i < n; i++) {
+        //cin >> A[i];
+        fin >> A[i];
+    }
+
+    for (int i = 0; i < n - 1; i++) {
+        long long a = 0;
+        if (k < n && (q.empty() || A[k] <= q.front())) {
+            a += A[k];
+            sum += A[k];
+            k++;
+        }
+        else {
+            a += q.front();
+            sum += q.front();
+            q.pop();
+        }
+
+        if (k < n && (q.empty() || A[k] <= q.front())) {
+            a += A[k];
+            sum += A[k];
+            k++;
+        }
+        else {
+            a += q.front();
+            sum += q.front();
+            q.pop();
+        }
+
+        q.push(a);
+    }
+
+    //cout << sum;
+    fou << sum;
 }
